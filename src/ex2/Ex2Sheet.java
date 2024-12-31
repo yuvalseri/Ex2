@@ -17,6 +17,7 @@ public class Ex2Sheet implements Sheet {
         eval();
     }
     public Ex2Sheet() {
+
         this(Ex2Utils.WIDTH, Ex2Utils.HEIGHT);
     }
 
@@ -34,6 +35,7 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public Cell get(int x, int y) {
+
         return table[x][y];
     }
 
