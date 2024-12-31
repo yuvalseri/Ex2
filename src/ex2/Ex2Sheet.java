@@ -74,7 +74,7 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public boolean isIn(int xx, int yy) {
-        boolean ans = xx>=0 && yy>=0;
+        boolean ans = xx>=0 && yy>=0 && xx<width() && yy<height();
         // Add your code here
 
         /////////////////////
