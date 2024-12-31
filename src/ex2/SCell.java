@@ -6,7 +6,7 @@ import java.util.List;
 public class SCell implements Cell {
     private String line;
     private int type;
-
+    private int order;
     private List<SCell> dependC;
     public SCell(String s) {
         // Add your code here
@@ -23,7 +23,8 @@ public class SCell implements Cell {
         for(SCell cell : dependC){
           max= Math.max(max, cell.getOrder());
         }
-        return 1+ max;
+        int order= 1+ max;
+        return order;
     }
     return -1;
         // ///////////////////
@@ -38,7 +39,7 @@ public class SCell implements Cell {
     @Override
 public void setData(String s) {
         // Add your code here
-        line = s;
+        this.line = s;
         /////////////////////
     }
     @Override
@@ -53,12 +54,12 @@ public void setData(String s) {
 
     @Override
     public void setType(int t) {
-        type = t;
+        this.type = t;
     }
 
     @Override
     public void setOrder(int t) {
         // Add your code here
-
+       this.order= t;
     }
 }
