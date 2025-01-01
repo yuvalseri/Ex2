@@ -40,10 +40,13 @@ public class Ex2Sheet implements Sheet {
     }
 
     @Override
-    public Cell get(String cords) {
-        Cell ans = null;
+    public Cell get(String XY) {
+        Cell ans = null; //Initializing the value of  the cell as null
         // Add your code here
-
+        Index2D index = new CellEntry(XY);
+        if (index.isValid()) { // if the index is valid
+            return get(index.getX(), index.getY()); // return the value of x and y
+        }
         /////////////////////
         return ans;
     }

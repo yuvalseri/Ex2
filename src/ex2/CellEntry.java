@@ -3,6 +3,9 @@ package ex2;
 
 public class CellEntry  implements Index2D {
 private String XY;
+public CellEntry(String XY){
+    this.XY= XY;
+}
 
     @Override
     public boolean isValid() {
