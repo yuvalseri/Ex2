@@ -17,8 +17,18 @@ private String XY;
     }
 
     @Override
-    public int getX() {return Ex2Utils.ERR;}
+    public int getX() {
+        if(isValid()){
+            return XY.charAt(0);
+        }
+        return Ex2Utils.ERR;}
 
     @Override
-    public int getY() {return Ex2Utils.ERR;}
+    public int getY() {
+        if(isValid()){
+            String numPart =XY.substring(1);
+            int number = Integer.parseInt(numPart);
+            return number;
+        }
+        return Ex2Utils.ERR;}
 }

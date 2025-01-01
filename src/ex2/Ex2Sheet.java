@@ -107,7 +107,8 @@ public class Ex2Sheet implements Sheet {
     @Override
     public String eval(int x, int y) {
         String ans = null;
-        if(get(x,y)!=null) {ans = get(x,y).toString();}
+        if(get(x,y)!=null) {
+            ans = get(x,y).toString();}
         // Add your code here
 
         /////////////////////
