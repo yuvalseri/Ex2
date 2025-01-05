@@ -45,7 +45,7 @@ public class Ex2Sheet implements Sheet {
         // Add your code here
         Index2D index = new CellEntry(XY);
         if (index.isValid()) { // if the index is valid
-            return get(index.getX(), index.getY()); // return the value of x and y
+            ans = get(index.getX(), index.getY()); // return the cell
         }
         /////////////////////
         return ans;
