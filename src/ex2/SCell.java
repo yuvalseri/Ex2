@@ -12,6 +12,40 @@ public class SCell implements Cell {
         // Add your code here
         setData(s);
     }
+    public static boolean isNumber(SCell c) {
+     String number= "01234556789";
+     if(c.getData().contains(number)){
+        return true;
+     }
+     return false;
+    }
+
+    public static boolean isForm(SCell c){
+        boolean ans = false;
+        if (c == null || c.toString().isEmpty()) {
+            return ans;
+        }
+        String content = c.toString();
+        if (!(content.charAt(0) == '=')) {
+                return ans;
+            }
+        if(){
+
+        }
+        return ans;
+        }
+
+    public static boolean isText(SCell c){
+        boolean ans = false;
+        if (c == null || c.toString().isEmpty()) {
+            return ans;
+        }
+        else if(!isNumber(c) && !isForm(c)){
+             ans= true;
+    }
+    return ans;
+    }
+
 
     @Override
     public int getOrder() {
