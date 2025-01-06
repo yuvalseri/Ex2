@@ -21,20 +21,46 @@ public class SCell implements Cell {
     }
 
     public static boolean isForm(SCell c){
-        boolean ans = false;
         if (c == null || c.toString().isEmpty()) {
-            return ans;
+            return false;
         }
         String content = c.toString();
         if (!(content.charAt(0) == '=')) {
-                return ans;
+                return false;
             }
-        if(){
-
+        String formula = content.substring(1);
+        int openParentheses = 0;
+        for (char ch : formula.toCharArray()) {
+            if (ch == '(') {
+                openParentheses++;
+            } else if (ch == ')') {
+                openParentheses--;
+            }
+            if (openParentheses < 0) {
+                return false; // סוגריים לא סגורים כראוי
+            }
         }
-        return ans;
+        if (openParentheses != 0) {
+            return false; // אם יש סוגריים שלא נסגרו כראוי
+        }
+        if (formula.contains("()")) {
+            return false; // פורמולה ריקה בתוך סוגריים
         }
 
+        if ((content.contains("[") && (!(content.contains("]")))) || (content.contains("]") && (!(content.contains("["))) ){
+            return false;
+        }
+
+
+    }
+
+    public static boolean isNumeric(String s) {
+        String number= "01234556789.";
+        if(s.contains(number)){
+            return true;
+        }
+        return false;
+    }
     public static boolean isText(SCell c){
         boolean ans = false;
         if (c == null || c.toString().isEmpty()) {
@@ -64,7 +90,6 @@ public class SCell implements Cell {
         // ///////////////////
     }
 
-    //@Override
     @Override
     public String toString() {
         return getData();

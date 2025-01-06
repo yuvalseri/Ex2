@@ -1,9 +1,11 @@
 package ex2;
 import java.io.IOException;
+import java.util.ArrayList;
 // Add your documentation below:
 
-public class Ex2Sheet implements Sheet {
+public  class Ex2Sheet implements Sheet {
     private Cell[][] table;
+
     // Add your code here
 
     // ///////////////////
@@ -88,10 +90,20 @@ public class Ex2Sheet implements Sheet {
     public int[][] depth() {
         int[][] ans = new int[width()][height()];
         // Add your code here
-
+        /*for (int i = 0; i <width() ; i++) { // a loop passes all the rows
+            for (int j = 0; j <height() ; j++) { // a loop passes all the cols
+                ans[i][j] = -2; // The initial value, before calculating the depth
+            }
+        }
+        for (int i = 0; i <width() ; i++) { // a loop passes all the rows
+            for (int j = 0; j <height() ; j++) { // a loop passes all the cols
+                ans[i][j] = computeDepth(int row, int col, boolean[][] visited, int[][] result);
+            }
+        }*/
         // ///////////////////
         return ans;
     }
+
 
     @Override
     public void load(String fileName) throws IOException {
