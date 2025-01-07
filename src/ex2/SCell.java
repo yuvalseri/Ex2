@@ -12,19 +12,19 @@ public class SCell implements Cell {
         // Add your code here
         setData(s);
     }
-    public static boolean isNumber(SCell c) {
+    public static boolean isNumber(String content) {
      String number= "01234556789";
-     if(c.getData().contains(number)){
+     if(content.contains(number)){
         return true;
      }
      return false;
     }
 
-    public static boolean isForm(SCell c){
-        if (c == null || c.toString().isEmpty()) {
+    public static boolean isForm(String content){
+        if (content == null || content.isEmpty()) {
             return false;
         }
-        String content = c.toString();
+
         if (!(content.charAt(0) == '=')) {
                 return false;
             }
@@ -47,11 +47,11 @@ public class SCell implements Cell {
             return false; // פורמולה ריקה בתוך סוגריים
         }
 
-        if ((content.contains("[") && (!(content.contains("]")))) || (content.contains("]") && (!(content.contains("["))) ){
+        if (content.contains("[") && (!(content.contains("]"))) || content.contains("]") && (!(content.contains("["))) ){
             return false;
         }
 
-
+     return true;
     }
 
     public static boolean isNumeric(String s) {
@@ -61,12 +61,12 @@ public class SCell implements Cell {
         }
         return false;
     }
-    public static boolean isText(SCell c){
+    public static boolean isText(String content){
         boolean ans = false;
-        if (c == null || c.toString().isEmpty()) {
+        if (content == null || content.toString().isEmpty()) {
             return ans;
         }
-        else if(!isNumber(c) && !isForm(c)){
+        else if(!isNumber(content) && !isForm(content)){
              ans= true;
     }
     return ans;
