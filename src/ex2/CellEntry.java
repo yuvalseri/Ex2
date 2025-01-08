@@ -13,7 +13,7 @@ public CellEntry(String XY){
         String numPart =XY.substring(1);
         int number = Integer.parseInt(numPart);
 
-        if(!Character.isLetter(firstchar) && (0>number || number>99 )){
+        if(!Character.isLetter(firstchar) || 0>number || number>99 ){
             return false;
         }
         return true;
@@ -22,7 +22,7 @@ public CellEntry(String XY){
     @Override
     public int getX() {
         if(isValid()){
-            return XY.charAt(0);
+            return XY.charAt(0) - 'A';
         }
         return Ex2Utils.ERR;}
 
