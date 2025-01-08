@@ -9,15 +9,31 @@ public CellEntry(String XY){
 
     @Override
     public boolean isValid() {
-        char firstchar= XY.charAt(0);
-        String numPart =XY.substring(1);
-        int number = Integer.parseInt(numPart);
-
-        if(!Character.isLetter(firstchar) || 0>number || number>99 ){
+        if (XY == null || XY.length() < 2) {
             return false;
+        }
+
+        char firstChar = XY.charAt(0);
+        String numPart = XY.substring(1);
+
+
+        if (!Character.isLetter(firstChar)) {
+            return false;
+        }
+
+        try {
+           int number = Integer.parseInt(numPart);
+           if (number < 0 || number > 99) {
+                 return false;
+           }
+        }
+        catch (NumberFormatException e) {
+        return false;
         }
         return true;
     }
+
+
 
     @Override
     public int getX() {

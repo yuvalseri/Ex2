@@ -23,8 +23,8 @@ class CellEntryTest {
         CellEntry c5 =new CellEntry("7B");
         assertFalse(c5.isValid());
 
-        //CellEntry c6 =new CellEntry("D111");
-        //assertFalse(c6.isValid());
+        CellEntry c6 =new CellEntry("D111");
+        assertFalse(c6.isValid());
 
     }
 
