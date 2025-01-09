@@ -11,6 +11,7 @@ public class SCell implements Cell {
     public SCell(String s) {
         // Add your code here
         setData(s);
+        this.type=getType();
     }
     public static boolean isNumber(String content) {
         if (content == null || content.isEmpty()) {
@@ -182,6 +183,15 @@ public class SCell implements Cell {
 public void setData(String s) {
         // Add your code here
         this.line = s;
+        if(isNumber(s)){
+            this.type= Ex2Utils.NUMBER;
+        }
+        if(isText(s)){
+            this.type= Ex2Utils.TEXT;
+        }
+        if(isForm(s)){
+            this.type= Ex2Utils.FORM;
+        }
         /////////////////////
     }
     @Override
