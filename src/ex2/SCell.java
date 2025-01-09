@@ -30,24 +30,10 @@ public class SCell implements Cell {
         if (content == null || content.isEmpty()) {
             return false;
         }
-        if (!(content.charAt(0) == '=')) { // formula must start in '="
+        if (!(content.charAt(0) == '=')) { // formula must start in '='
                 return false;
             }
         String formula = content.substring(1);
-        int openParentheses = 0;
-        /*for (char ch : formula.toCharArray()) {
-            if (ch == '(') {
-                openParentheses++;
-            } else if (ch == ')') {
-                openParentheses--;
-            }
-            if (openParentheses < 0) {
-                return false; // סוגריים לא סגורים כראוי
-            }
-        }
-        if (openParentheses != 0) {
-            return false; // אם יש סוגריים שלא נסגרו כראוי
-        }*/
         if (formula.contains("()")) {
             return false; // if there are empty parentheses
         }
@@ -68,7 +54,7 @@ public class SCell implements Cell {
             return false;
         }
 
-        String validChars = "0123456789.+-*/()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        String validChars = "0123456789.+-/*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         String operators = "+-*/";
 
         boolean lastCharWasOperator = false; // the former char is an operator
@@ -76,7 +62,7 @@ public class SCell implements Cell {
         boolean expectingNumberAfterLetter = false; // we expect to a number after a letter
         StringBuilder numberBuffer = new StringBuilder();
 
-        openParentheses = 0;
+       int openParentheses = 0;
 
         for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
             char ch = formula.charAt(i);
@@ -95,11 +81,7 @@ public class SCell implements Cell {
                     return false; //
                 }
 
-
-
-
-            // אות
-            if (Character.isLetter(ch)) {
+                if (Character.isLetter(ch)) {
                 if (lastCharWasLetter) { // if there are two adjoint letters
                     return false; //
                 }
@@ -109,21 +91,20 @@ public class SCell implements Cell {
                 continue;
             }
 
-            // מספר
-            if (Character.isDigit(ch)) {
-                if (expectingNumberAfterLetter) {
-                    numberBuffer.append(ch);
-                    if (numberBuffer.length() > 2) {
-                        return false; // the number after the letter is grater than 99
-                    }
+                if (Character.isDigit(ch)) {
+                   if (expectingNumberAfterLetter) {
+                       numberBuffer.append(ch);
+                       if (numberBuffer.length() > 2) {
+                           return false; // the number after the letter is grater than 99
+                       }
                     lastCharWasLetter = false;
                     expectingNumberAfterLetter = false; // reset
-                    continue;
+                       continue;
                 }
+                   lastCharWasOperator= false;
             }
 
-            // אופרטור
-            if (operators.indexOf(ch) != -1) {
+                if (operators.indexOf(ch) != -1) {
                 if (lastCharWasOperator) {
                     return false; // two adjoint operators
                 }

@@ -135,4 +135,45 @@ public  class Ex2Sheet implements Sheet {
         /////////////////////
         return ans;
         }
+
+
+    public static int indOfMainOp(String a) {
+        double[] indValue = new double[a.length()];
+        for (int j = 0; j < a.length(); j++) {
+            indValue[j] = -1;
+        }
+        double value = -1;
+        int indexofop = -1;
+
+        if (SCell.isNumber(a)) {
+            return -1;
+        }
+
+        if (SCell.isForm(a))
+            for (int i = 1; i < a.length(); i++) {
+                if (a.charAt(i) == '(') {
+                    for (int k = i + 1; k < a.length(); k++) {
+                        if (a.charAt(k) == ')') {
+                                i = k + 1;
+                            }
+                    }
+                    continue;
+                }
+
+                if (a.charAt(i) == '-' || a.charAt(i) == '+') {
+                    indValue[i] = 0;
+                }
+
+                if (a.charAt(i) == '*' || a.charAt(i) == '/') {
+                    indValue[i] = 0.5;
+                }
+            }
+        for (int t = 0; t < indValue.length; t++) {
+            if (indValue[t] > value) {
+                value = indValue[t];
+                indexofop = t;
+            }
+        }
+        return indexofop;
+    }
 }

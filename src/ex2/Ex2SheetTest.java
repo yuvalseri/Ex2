@@ -53,4 +53,12 @@ class Ex2SheetTest {
     @Test
     void testEval() {
     }
+    @Test
+    void indOfMainOp(){
+        assertEquals(-1, Ex2Sheet.indOfMainOp("=1"));
+        assertEquals(-1, Ex2Sheet.indOfMainOp("5"));
+        assertEquals(-1, Ex2Sheet.indOfMainOp("=DFGG"));
+        assertEquals(3, Ex2Sheet.indOfMainOp("=A2+3"));
+        //assertEquals(6, Ex2Sheet.indOfMainOp("=(A2+3)/(7-A1)"));
+    }
 }
