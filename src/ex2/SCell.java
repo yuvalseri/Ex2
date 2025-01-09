@@ -26,26 +26,21 @@ public class SCell implements Cell {
         return true;
     }
 
-    public static boolean isForm(String content){
+    public static boolean isForm(String content) {
         if (content == null || content.isEmpty()) {
             return false;
         }
-        if (!(content.charAt(0) == '=')) { // formula must start in '='
-                return false;
-            }
+
+        if (content.charAt(0) != '=') {// formula must start in '='
+            return false;
+        }
+
         String formula = content.substring(1);
         if (formula.contains("()")) {
             return false; // if there are empty parentheses
         }
 
-        if (content.contains("[") && (!(content.contains("]"))) || content.contains("]") && (!(content.contains("["))) ){
-            return false;
-        }
-        if (content == null || content.isEmpty()) {
-            return false;
-        }
-
-        if (content.charAt(0) != '=') {
+        if (content.contains("[") && (!(content.contains("]"))) || content.contains("]") && (!(content.contains("[")))) {
             return false;
         }
 
@@ -57,16 +52,14 @@ public class SCell implements Cell {
         String validChars = "0123456789.+-/*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         String operators = "+-*/";
 
-        boolean lastCharWasOperator = false; // the former char is an operator
+        /*boolean lastCharWasOperator = false; // the former char is an operator
         boolean lastCharWasLetter = false;   // the former char is a letter
         boolean expectingNumberAfterLetter = false; // we expect to a number after a letter
         StringBuilder numberBuffer = new StringBuilder();
-
-       int openParentheses = 0;
+        int openParentheses = 0;
 
         for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
             char ch = formula.charAt(i);
-
 
             if (validChars.indexOf(ch) == -1) { // there is an invalid char
                 return false;
@@ -123,7 +116,68 @@ public class SCell implements Cell {
             return false;
         }
 
-        return true;
+        return true;*/
+
+        int openParentheses = 0;
+
+        for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
+            char ch = formula.charAt(i);
+
+            if (validChars.indexOf(ch) == -1) { // there is an invalid char
+                return false;
+            }
+
+            if (ch == '(') {
+                openParentheses++;
+            } else if (ch == ')') {
+                openParentheses--;
+            }
+            if (openParentheses < 0) { //the number of ')' is greater than the number of '('
+                return false; //
+            }
+            if (Character.isLetter(ch)) {
+                if(i + 1 < formula.length() && Character.isLetter(formula.charAt(i + 1))){
+                    return false;
+                }
+                else if(i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))){
+                    int count=1;
+                    for(int j = i + 2; j < formula.length(); j++){
+                        if(Character.isDigit(formula.charAt(j))){
+                            count++;
+                        }
+                        else {
+                            break; // עצור אם הגעת לתו שאינו ספרה
+                        }
+                        if(count>2){
+                            return false;
+                        }
+                    }
+
+                }
+                continue;
+            }
+            /*if(operators.indexOf(ch)=>0){
+                for (i+1; i<formula.length(); i++){
+                    if(operators.indexOf(formula.charAt(i+1))=>0){
+                        return false;
+                    }
+                }
+                continue;
+            }*/
+            if (operators.indexOf(ch) >= 0) {
+                if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) {
+                    return false;
+                }
+            }
+        }
+        if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) {
+            return false;
+        }
+        if (openParentheses != 0) {
+            return false; // if there are parentheses that aren't close
+        }
+
+    return true;
     }
 
     public static boolean isText(String content){

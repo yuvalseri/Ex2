@@ -25,8 +25,11 @@ class SCellTest {
         assertTrue(SCell.isForm("=(0.2)"));
         assertTrue(SCell.isForm("=A3"));
         assertTrue(SCell.isForm("=a3"));
-        //assertTrue(SCell.isForm("=A1+A2"));
-        //assertTrue(SCell.isForm("=(2+A3)/A2"));
+        assertTrue(SCell.isForm("=A1+A2"));
+        assertTrue(SCell.isForm("=(2+A3)/A2"));
+        assertTrue(SCell.isForm("=(g4+f5)-7"));
+        assertTrue(SCell.isForm("=(g4+f5)/(H5+9)"));
+        assertTrue(SCell.isForm("=(A2+3)/(7-A1)"));
 
         assertFalse(SCell.isForm("=(1+2)=((3))-1"));
         assertFalse(SCell.isForm("=(5"));
@@ -34,6 +37,11 @@ class SCellTest {
         assertFalse(SCell.isForm(" "));
         assertFalse(SCell.isForm("=()"));
         assertFalse(SCell.isForm("=@"));
+        assertFalse(SCell.isForm("=A176"));
+        assertFalse(SCell.isForm("=AB"));
+        assertFalse(SCell.isForm("=1+8+"));
+        assertFalse(SCell.isForm("=1++8"));
+        assertFalse(SCell.isForm("=1+-8"));
     }
 
 
