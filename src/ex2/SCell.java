@@ -68,7 +68,7 @@ public class SCell implements Cell {
             return false;
         }
 
-        String validChars = "0123456789.+-*/=()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String validChars = "0123456789.+-*/=()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         String operators = "+-*/";
 
         boolean lastCharWasOperator = false; // the former char is an operator

@@ -24,6 +24,7 @@ class SCellTest {
         assertTrue(SCell.isForm("=(1+2)*((3))-1"));
         assertTrue(SCell.isForm("=(0.2)"));
         assertTrue(SCell.isForm("=A3"));
+        assertTrue(SCell.isForm("=a3"));
         //assertTrue(SCell.isForm("=(2+A3)/A2"));
 
         //assertFalse(SCell.isForm("=(1+2)=((3))-1"));
