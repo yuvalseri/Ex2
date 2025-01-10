@@ -122,16 +122,15 @@ public  class Ex2Sheet implements Sheet {
     public String eval(int x, int y) {
         String ans = null;
         if(get(x,y)!=null) {
-            ans = get(x,y).toString();
-        }
-        if(SCell.isNumber(ans) || SCell.isText(ans)){
-            return ans;
-        }
-        else if(SCell.isForm(ans)){
+            ans = get(x, y).toString();
 
-        }
-        // Add your code here
+            if (SCell.isNumber(ans) || SCell.isText(ans)) {
+                return ans;
+            } else if (SCell.isForm(ans)) {
 
+            }
+            // Add your code here
+        }
         /////////////////////
         return ans;
         }

@@ -1,6 +1,9 @@
 package ex2;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,8 +61,45 @@ class SCellTest {
         assertFalse(SCell.isText(" "));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getOrder() {
+        SCell a1 = new SCell("10");
+        SCell a2 = new SCell("20");
+        SCell formulaCell = new SCell("=A1+A2");
+
+        formulaCell.dependC = new ArrayList<>(List.of(a1, a2));
+        assertEquals(1, formulaCell.getOrder());
+
+        SCell a3 = new SCell("=A1+5");  //
+        SCell a4 = new SCell("=A2+2");  //
+        SCell c1 = new SCell("=A3+A4");
+
+        c1.dependC = new ArrayList<>(List.of(a3, a4));
+        assertEquals(2, c1.getOrder());
+
+        SCell a5 = new SCell("=A1+A3*5");  //
+        SCell a6 = new SCell("=A2+2");  //
+        SCell c2 = new SCell("=A5*A6");
+
+        c2.dependC = new ArrayList<>(List.of(a5, a6));
+        assertEquals(2, c2.getOrder());
+
+        SCell a7 = new SCell("5");
+        SCell a8 = new SCell("10");
+        SCell b1 = new SCell("=A1+2");
+        SCell b2 = new SCell("=A2+3");
+        SCell c3 = new SCell("=B1+B2");
+        SCell d1 = new SCell("=C1*2");
+
+        // הגדרת תלות
+        b1.dependC = new ArrayList<>(List.of(a7));
+        b2.dependC = new ArrayList<>(List.of(a8));
+        c3.dependC = new ArrayList<>(List.of(b1, b2));
+        d1.dependC = new ArrayList<>(List.of(c3));
+
+        assertEquals(3, d1.getOrder());
+
+
     }
 
     @org.junit.jupiter.api.Test
@@ -84,5 +124,10 @@ class SCellTest {
 
     @org.junit.jupiter.api.Test
     void setOrder() {
+    }
+
+    @Test
+    void testGetDependencies() {
+
     }
 }

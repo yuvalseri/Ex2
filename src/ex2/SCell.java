@@ -1,17 +1,30 @@
 package ex2;
 // Add your documentation below:
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SCell implements Cell {
     private String line;
     private int type;
     private int order;
-    private List<SCell> dependC;
+    //private List<SCell> dependC;
+    public ArrayList<SCell> dependC;
     public SCell(String s) {
         // Add your code here
+        this.line=s;
         setData(s);
         this.type=getType();
+        this.dependC= new ArrayList<>();
+        if (this.type == Ex2Utils.FORM) {
+            this.dependC = (ArrayList<SCell>) SCell.getDependencies(s);
+            System.out.println("Dependencies for " + s + ": " + this.dependC);
+        }
+        else{
+            this.dependC = new ArrayList<>();
+        }
     }
     public static boolean isNumber(String content) {
         if (content == null || content.isEmpty()) {
@@ -34,23 +47,23 @@ public class SCell implements Cell {
         if (content.charAt(0) != '=') {// formula must start in '='
             return false;
         }
+        if(content.charAt(0) == '=') {
+            String formula = content.substring(1);
+            if (formula.contains("()")) {
+                return false; // if there are empty parentheses
+            }
 
-        String formula = content.substring(1);
-        if (formula.contains("()")) {
-            return false; // if there are empty parentheses
-        }
+            if (content.contains("[") && (!(content.contains("]"))) || content.contains("]") && (!(content.contains("[")))) {
+                return false;
+            }
 
-        if (content.contains("[") && (!(content.contains("]"))) || content.contains("]") && (!(content.contains("[")))) {
-            return false;
-        }
+            formula = content.substring(1);
+            if (formula.isEmpty()) {// if the formula is empty after the '='
+                return false;
+            }
 
-        formula = content.substring(1);
-        if (formula.isEmpty()) {// if the formula is empty after the '='
-            return false;
-        }
-
-        String validChars = "0123456789.+-/*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        String operators = "+-*/";
+            String validChars = "0123456789.+-/*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            String operators = "+-*/";
 
         /*boolean lastCharWasOperator = false; // the former char is an operator
         boolean lastCharWasLetter = false;   // the former char is a letter
@@ -118,44 +131,42 @@ public class SCell implements Cell {
 
         return true;*/
 
-        int openParentheses = 0;
+            int openParentheses = 0;
 
-        for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
-            char ch = formula.charAt(i);
+            for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
+                char ch = formula.charAt(i);
 
-            if (validChars.indexOf(ch) == -1) { // there is an invalid char
-                return false;
-            }
-
-            if (ch == '(') {
-                openParentheses++;
-            } else if (ch == ')') {
-                openParentheses--;
-            }
-            if (openParentheses < 0) { //the number of ')' is greater than the number of '('
-                return false; //
-            }
-            if (Character.isLetter(ch)) {
-                if(i + 1 < formula.length() && Character.isLetter(formula.charAt(i + 1))){
+                if (validChars.indexOf(ch) == -1) { // there is an invalid char
                     return false;
                 }
-                else if(i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))){
-                    int count=1;
-                    for(int j = i + 2; j < formula.length(); j++){
-                        if(Character.isDigit(formula.charAt(j))){
-                            count++;
-                        }
-                        else {
-                            break; // עצור אם הגעת לתו שאינו ספרה
-                        }
-                        if(count>2){
-                            return false;
-                        }
-                    }
 
+                if (ch == '(') {
+                    openParentheses++;
+                } else if (ch == ')') {
+                    openParentheses--;
                 }
-                continue;
-            }
+                if (openParentheses < 0) { //the number of ')' is greater than the number of '('
+                    return false; //
+                }
+                if (Character.isLetter(ch)) {
+                    if (i + 1 < formula.length() && Character.isLetter(formula.charAt(i + 1))) {
+                        return false;
+                    } else if (i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))) {
+                        int count = 1;
+                        for (int j = i + 2; j < formula.length(); j++) {
+                            if (Character.isDigit(formula.charAt(j))) {
+                                count++;
+                            } else {
+                                break; // עצור אם הגעת לתו שאינו ספרה
+                            }
+                            if (count > 2) {
+                                return false;
+                            }
+                        }
+
+                    }
+                    continue;
+                }
             /*if(operators.indexOf(ch)=>0){
                 for (i+1; i<formula.length(); i++){
                     if(operators.indexOf(formula.charAt(i+1))=>0){
@@ -164,19 +175,19 @@ public class SCell implements Cell {
                 }
                 continue;
             }*/
-            if (operators.indexOf(ch) >= 0) {
-                if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) {
-                    return false;
+                if (operators.indexOf(ch) >= 0) {
+                    if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) {
+                        return false;
+                    }
                 }
             }
+            if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) {
+                return false;
+            }
+            if (openParentheses != 0) {
+                return false; // if there are parentheses that aren't close
+            }
         }
-        if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) {
-            return false;
-        }
-        if (openParentheses != 0) {
-            return false; // if there are parentheses that aren't close
-        }
-
     return true;
     }
 
@@ -195,7 +206,7 @@ public class SCell implements Cell {
     @Override
     public int getOrder() {
         // Add your code here
-    if(type== Ex2Utils.NUMBER || type== Ex2Utils.TEXT){
+        if(type== Ex2Utils.NUMBER || type== Ex2Utils.TEXT){
         return 0;}
     else if(type== Ex2Utils.FORM){
         int max=0;
@@ -227,6 +238,8 @@ public void setData(String s) {
         if(isForm(s)){
             this.type= Ex2Utils.FORM;
         }
+
+        //}
         /////////////////////
     }
     @Override
@@ -248,5 +261,23 @@ public void setData(String s) {
     public void setOrder(int t) {
         // Add your code here
        this.order= t;
+    }
+    public static List<SCell> getDependencies(String formula) {
+        List<SCell> dependencies = new ArrayList<>();
+
+        if (formula.startsWith("=")) {
+            String[] tokens = formula.substring(1).split("[*+\\-/()]");
+            for (String token : tokens) {
+                if (isValidCellReference(token)) {
+                    dependencies.add(new SCell(token)); // צור תאים תלויים
+                }
+            }
+        }
+
+        return dependencies;
+    }
+
+    private static boolean isValidCellReference(String token) {
+        return token.matches("[A-Za-z]\\d+");
     }
 }

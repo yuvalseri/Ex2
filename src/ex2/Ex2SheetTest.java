@@ -2,6 +2,7 @@ package ex2;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 class Ex2SheetTest {
@@ -36,6 +37,8 @@ class Ex2SheetTest {
 
     @Test
     void isIn() {
+        //Ex2Sheet c= new Ex2Sheet();
+        //assertTrue(Ex2Sheet.isIn());
     }
 
     @Test
