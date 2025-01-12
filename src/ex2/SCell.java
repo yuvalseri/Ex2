@@ -277,7 +277,7 @@ public void setData(String s) {
         return dependencies;
     }
 
-    private static boolean isValidCellReference(String token) {
+    public static boolean isValidCellReference(String token) {
         return token.matches("[A-Za-z]\\d+");
     }
 }
