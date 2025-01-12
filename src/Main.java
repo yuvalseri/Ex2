@@ -1,3 +1,4 @@
+import ex2.Ex2Sheet;
 import ex2.SCell;
 
 import java.util.ArrayList;
@@ -34,7 +35,20 @@ public class Main {
         for (SCell dep : a7.dependC) {
             System.out.println(dep.getData());
         }
+
+        Ex2Sheet sheet = new Ex2Sheet(3, 3);
+
+        sheet.set(0, 0, "=5+3*2");
+        sheet.set(0, 1, "=10/(2+3)");
+        sheet.set(0, 2, "Hello");
+        sheet.set(1, 0, "=(1+2)*3/(2/5)");
+
+        System.out.println(sheet.eval(0, 0));
+        System.out.println(sheet.eval(0, 1));
+        System.out.println(sheet.eval(0, 2));
+        System.out.println(sheet.eval(1, 0));
     }
+
 
 
 }

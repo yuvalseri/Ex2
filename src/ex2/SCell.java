@@ -265,11 +265,11 @@ public void setData(String s) {
     public static List<SCell> getDependencies(String formula) {
         List<SCell> dependencies = new ArrayList<>();
 
-        if (formula.startsWith("=")) {
+        if (formula.indexOf("=") == 0) {
             String[] tokens = formula.substring(1).split("[*+\\-/()]");
             for (String token : tokens) {
                 if (isValidCellReference(token)) {
-                    dependencies.add(new SCell(token)); // צור תאים תלויים
+                    dependencies.add(new SCell(token));
                 }
             }
         }

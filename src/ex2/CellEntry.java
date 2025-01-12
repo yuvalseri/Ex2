@@ -46,7 +46,7 @@ public CellEntry(String XY){
     public int getY() {
         if(isValid()){
             String numPart =XY.substring(1);
-            int number = Integer.parseInt(numPart);
+            int number = Integer.parseInt(numPart)-1;
             return number;
         }
         return Ex2Utils.ERR;}

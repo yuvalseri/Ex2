@@ -2,6 +2,7 @@ package ex2;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static ex2.SCell.getDependencies;
 import static ex2.SCell.isNumber;
 // Add your documentation below:
 
@@ -91,16 +92,17 @@ public  class Ex2Sheet implements Sheet {
     public int[][] depth() {
         int[][] ans = new int[width()][height()];
         // Add your code here
-        /*for (int i = 0; i <width() ; i++) { // a loop passes all the rows
+        for (int i = 0; i <width() ; i++) { // a loop passes all the rows
             for (int j = 0; j <height() ; j++) { // a loop passes all the cols
                 ans[i][j] = -2; // The initial value, before calculating the depth
             }
         }
         for (int i = 0; i <width() ; i++) { // a loop passes all the rows
             for (int j = 0; j <height() ; j++) { // a loop passes all the cols
-                ans[i][j] = computeDepth(int row, int col, boolean[][] visited, int[][] result);
+
+                ans[i][j] = getDependencies(get(i,j).toString()).size();
             }
-        }*/
+        }
         // ///////////////////
         return ans;
     }
@@ -121,7 +123,7 @@ public  class Ex2Sheet implements Sheet {
     }
 
     @Override
-    public String eval(int x, int y) {
+    /*public String eval(int x, int y) {
         String ans = get(x, y).toString();
         if (ans == null) {
             return null;
@@ -233,6 +235,91 @@ public  class Ex2Sheet implements Sheet {
         }
         return indexofop;
     }*/
+
+    public String eval(int x, int y) {
+        String ans = get(x, y).toString();
+        if (ans == null) {
+            return null;
+        }
+
+        ans = ans.trim();
+
+        if (SCell.isText(ans)) {
+            return ans;
+        }
+
+        if (SCell.isForm(ans)) {
+            return calculateExpression(ans.substring(1)).toString();
+        }
+
+        if (isNumber(ans)) {
+            return ans;
+        }
+
+        throw new IllegalArgumentException("Invalid cell value: " + ans);
+    }
+
+    private String calculateExpression(String ans) {
+        while (ans.contains("(")) {
+            int openIndex = ans.lastIndexOf("(");
+            int closeIndex = ans.indexOf(")", openIndex);
+            if (closeIndex == -1) {
+                throw new IllegalArgumentException("Unmatched parentheses in expression: " + ans);
+            }
+
+            String innerExpression = ans.substring(openIndex + 1, closeIndex);
+            String innerValue = calculateExpression(innerExpression);
+
+            ans = ans.substring(0, openIndex) + innerValue + ans.substring(closeIndex + 1);
+        }
+
+        if (isNumber(ans)) {
+            return ans;
+        }
+
+        if (isValidCellReference(ans)) {
+
+            CellEntry cell = new CellEntry(ans);
+            if (cell.isValid()) {
+                String cellValue = eval(cell.getX(), cell.getY());
+                return calculateExpression(cellValue);
+            } else {
+                throw new IllegalArgumentException("Invalid cell reference: " + ans);
+            }
+        }
+
+        int mainOpIndex = indOfMainOp(ans);
+
+        if (mainOpIndex == -1) {
+            return ans;
+        }
+
+        String leftPart = ans.substring(0, mainOpIndex).trim();
+        String rightPart = ans.substring(mainOpIndex + 1).trim();
+        char operator = ans.charAt(mainOpIndex);
+
+
+        double leftValue = Double.parseDouble(calculateExpression(leftPart));
+        double rightValue = Double.parseDouble(calculateExpression(rightPart));
+
+
+        double result;
+        switch (operator) {
+            case '+': result = leftValue + rightValue; break;
+            case '-': result = leftValue - rightValue; break;
+            case '*': result = leftValue * rightValue; break;
+            case '/':
+                if (rightValue == 0) {
+                    throw new ArithmeticException("Division by zero");
+                }
+                result = leftValue / rightValue;
+                break;
+            default: throw new IllegalArgumentException("Invalid operator: " + operator);
+        }
+
+        return String.valueOf(result);  // החזר את התוצאה כמספר
+    }
+
     public static int indOfMainOp(String form) {
         int IndexOfMainOp = -1;
         int current = Integer.MAX_VALUE;
@@ -264,4 +351,40 @@ public  class Ex2Sheet implements Sheet {
         }
         return IndexOfMainOp;
     }
+
+    private boolean isValidCellReference(String a) {
+        return a.matches("[A-Z]+[0-9]+"); //
+    }
+
+    /*public static int indOfMainOp(String form) {
+        int IndexOfMainOp = -1;
+        int current = Integer.MAX_VALUE;
+        int openParent = 0;
+
+        for (int i = 0; i < form.length(); i++) {
+            char c = form.charAt(i);
+
+            if (c == '(') {
+                openParent++;
+            } else if (c == ')') {
+                openParent--;
+            }
+
+            if (openParent == 0) {
+                int precedence = -1;
+
+                if (c == '+' || c == '-') {
+                    precedence = 1;
+                } else if (c == '*' || c == '/') {
+                    precedence = 2;
+                }
+
+                if (precedence > -1 && precedence <= current) {
+                    current = precedence;
+                    IndexOfMainOp = i;
+                }
+            }
+        }
+        return IndexOfMainOp;
+    }*/
 }
