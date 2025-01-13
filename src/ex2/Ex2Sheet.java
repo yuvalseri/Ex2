@@ -63,15 +63,22 @@ public  class Ex2Sheet implements Sheet {
 
     @Override
     public Cell get(String XY) {
-        Cell ans = null; //Initializing the value of  the cell as null
-        // Add your code here
         Index2D index = new CellEntry(XY);
-        if (index.isValid()) { // if the index is valid
-            ans = get(index.getX(), index.getY()); // return the cell
-        }
-        /////////////////////
-        return ans;
+            if (index.isValid()) { //if the index is valid
+                Cell ans = get(index.getX(), index.getY()); // ans is the cell in sheet[x][y]
+                if (ans == null || ans.toString().isEmpty()) { //if the cell is null
+                    return new SCell(Ex2Utils.EMPTY_CELL); // return the cell is empty
+                }
+                else { // if the cell is not empty
+                    return ans; // return the value of the cell
+                }
+            }
+            else { //if the index is invalid
+                throw new IllegalArgumentException(String.valueOf(Ex2Utils.ERR));
+            }
     }
+
+
 
     @Override
     public int width() {

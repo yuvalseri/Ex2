@@ -17,6 +17,20 @@ class Ex2SheetTest {
 
     @Test
     void testGet() {
+        Ex2Sheet sheet = new Ex2Sheet();
+        sheet.set(0, 0, "5");
+        sheet.set(1, 1, "Hello");
+        sheet.set(2, 2, "=A1+4");
+        sheet.set(3, 3, "");
+
+
+        assertEquals("5", sheet.get("A1").toString());
+        assertEquals("Hello", sheet.get("B2").toString());
+        assertEquals("=A1+4", sheet.get("C3").toString());
+        assertEquals(Ex2Utils.EMPTY_CELL, sheet.get("D4").toString());
+        assertThrows(IllegalArgumentException.class, () -> {
+            sheet.get("AB");
+        });
     }
 
     @Test
