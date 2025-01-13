@@ -21,10 +21,14 @@ class Ex2SheetTest {
 
     @Test
     void width() {
+        Ex2Sheet sheet = new Ex2Sheet(10, 10);
+        assertEquals(10, sheet.width());
     }
 
     @Test
     void height() {
+        Ex2Sheet sheet = new Ex2Sheet(10, 10);
+        assertEquals(10, sheet.height());
     }
 
     @Test
@@ -39,8 +43,12 @@ class Ex2SheetTest {
 
     @Test
     void isIn() {
-        //Ex2Sheet c= new Ex2Sheet();
-        //assertTrue(Ex2Sheet.isIn());
+        Ex2Sheet sheet = new Ex2Sheet(10, 10);
+        assertTrue(sheet.isIn(0,7));
+        assertTrue(sheet.isIn(1,3));
+
+        assertFalse(sheet.isIn(11,3));
+        assertFalse(sheet.isIn(100,11));
     }
 
     @Test
