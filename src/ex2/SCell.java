@@ -10,6 +10,7 @@ public class SCell implements Cell {
     private String line;
     private int type;
     private int order;
+    private boolean isBeingCalculated = false;
     //private List<SCell> dependC;
     public ArrayList<SCell> dependC;
     public SCell(String s) {
@@ -201,19 +202,26 @@ public class SCell implements Cell {
 
     @Override
     public int getOrder() {
+
         // Add your code here
         if(type== Ex2Utils.NUMBER || type== Ex2Utils.TEXT){
         return 0;}
-    else if(type== Ex2Utils.FORM){
-        int max=0;
-        for(SCell cell : dependC){
-          max= Math.max(max, cell.getOrder());
+        if (isBeingCalculated) {
+            throw new IllegalStateException("Circular dependency detected!");
         }
-        int order= 1+ max;
-        return order;
+        else if(type== Ex2Utils.FORM){
+            isBeingCalculated = true;
+            int max=0;
+
+            for(SCell cell : dependC){
+               max= Math.max(max, cell.getOrder());
+            }
+            isBeingCalculated = false;
+            int order= 1+ max;
+            return order;
     }
     return -1;
-        // ///////////////////
+
     }
 
     @Override

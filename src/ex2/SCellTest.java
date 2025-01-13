@@ -91,13 +91,20 @@ class SCellTest {
         SCell c3 = new SCell("=B1+B2");
         SCell d1 = new SCell("=C1*2");
 
-        // הגדרת תלות
         b1.dependC = new ArrayList<>(List.of(a7));
         b2.dependC = new ArrayList<>(List.of(a8));
         c3.dependC = new ArrayList<>(List.of(b1, b2));
         d1.dependC = new ArrayList<>(List.of(c3));
 
         assertEquals(3, d1.getOrder());
+
+        SCell a9 = new SCell("=B1");
+        SCell b9 = new SCell("=A1");
+
+        a9.dependC = new ArrayList<>(List.of(b9));
+        b9.dependC = new ArrayList<>(List.of(a9));
+        assertThrows(IllegalStateException.class, () -> a9.getOrder(), "Expected Circular dependency detected!");
+
 
 
     }
