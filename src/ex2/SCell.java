@@ -168,14 +168,7 @@ public class SCell implements Cell {
                     }
                     continue;
                 }
-            /*if(operators.indexOf(ch)=>0){
-                for (i+1; i<formula.length(); i++){
-                    if(operators.indexOf(formula.charAt(i+1))=>0){
-                        return false;
-                    }
-                }
-                continue;
-            }*/
+
                 if (operators.indexOf(ch) >= 0) {
                     if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) {
                         return false;

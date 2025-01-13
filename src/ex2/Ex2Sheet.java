@@ -32,18 +32,28 @@ public  class Ex2Sheet implements Sheet {
 
         if (c != null) {
             String cellValue = c.toString();
-            if(SCell.isNumber(cellValue)){
-                 double num= Double.parseDouble(cellValue);
-                 ans= String.valueOf(num);
+
+            if (cellValue.isEmpty()) {
+                return Ex2Utils.EMPTY_CELL;
             }
             if (SCell.isForm(cellValue)) {
-                ans = eval(x,y);
-            } else {
+                ans = eval(x, y);
+            }
+            else if (SCell.isNumber(cellValue)) {
+                double num = Double.parseDouble(cellValue);
+                ans = String.valueOf(num);
+            }
+            else if (SCell.isText(cellValue)) {
                 ans = cellValue;
+            }
+            else {
+                ans = Ex2Utils.ERR_FORM;
             }
         }
         return ans;
     }
+
+
 
     @Override
     public Cell get(int x, int y) {
@@ -364,35 +374,4 @@ public  class Ex2Sheet implements Sheet {
         return a.matches("[A-Z]+[0-9]+"); //
     }
 
-    /*public static int indOfMainOp(String form) {
-        int IndexOfMainOp = -1;
-        int current = Integer.MAX_VALUE;
-        int openParent = 0;
-
-        for (int i = 0; i < form.length(); i++) {
-            char c = form.charAt(i);
-
-            if (c == '(') {
-                openParent++;
-            } else if (c == ')') {
-                openParent--;
-            }
-
-            if (openParent == 0) {
-                int precedence = -1;
-
-                if (c == '+' || c == '-') {
-                    precedence = 1;
-                } else if (c == '*' || c == '/') {
-                    precedence = 2;
-                }
-
-                if (precedence > -1 && precedence <= current) {
-                    current = precedence;
-                    IndexOfMainOp = i;
-                }
-            }
-        }
-        return IndexOfMainOp;
-    }*/
 }
