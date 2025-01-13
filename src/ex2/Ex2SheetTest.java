@@ -75,6 +75,19 @@ class Ex2SheetTest {
 
     @Test
     void depth() {
+        Ex2Sheet sheet = new Ex2Sheet();
+        sheet.set(0, 0, "2");
+        sheet.set(1, 1, "3");
+        sheet.set(2, 2, "=A1*B2+5");
+        sheet.set(3, 3, "=A1*B2+C3+5");
+
+        int[][] depths = sheet.depth();
+
+        assertEquals(0, depths[0][0]);
+        assertEquals(0, depths[1][1]);
+        assertEquals(1, depths[2][2]);
+        //assertEquals(2, depths[3][3]);
+
     }
 
     @Test

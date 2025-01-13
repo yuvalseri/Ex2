@@ -1,6 +1,7 @@
 package ex2;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static ex2.SCell.getDependencies;
 import static ex2.SCell.isNumber;
@@ -104,6 +105,20 @@ public  class Ex2Sheet implements Sheet {
     public void eval() {
         int[][] dd = depth();
         // Add your code here
+        for (int i = 0; i < dd.length; i++) {
+            for (int j = 0; j < dd[i].length; j++) {
+                // נוודא שהשורה או העמודה לא ריקה לפני שנחשב
+                if (dd[i][j] != -1) {  // נניח -1 אומר שאין צורך לחשב
+                    String cellValue = get(i, j).toString();
+
+                    // אם התא הוא פורמולה, נחשב אותו
+                    if (SCell.isForm(cellValue)) {
+                        String result = eval(i,j);
+                        set(i, j, result);  // נשמור את התוצאה בחזרה בתא
+                    }
+                }
+            }
+        }
 
         // ///////////////////
     }
@@ -118,7 +133,7 @@ public  class Ex2Sheet implements Sheet {
     }
 
     @Override
-    public int[][] depth() {
+    /*public int[][] depth() {
         int[][] ans = new int[width()][height()];
         // Add your code here
         for (int i = 0; i <width() ; i++) { // a loop passes all the rows
@@ -134,7 +149,51 @@ public  class Ex2Sheet implements Sheet {
         }
         // ///////////////////
         return ans;
+    }*/
+
+    public int[][] depth() {
+        int[][] ans = new int[width()][height()];
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                ans[i][j] = -2;  //initializing all the value of the cells to -2
+            }
+        }
+
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                if (ans[i][j] == -2) { // if the depth wasn't calculated yet
+                    ans[i][j] = calculateDepth(i, j, ans); //calculating the depth of the cell
+                }
+            }
+        }
+
+        return ans; // return the array with the values
     }
+
+    private int calculateDepth(int x, int y, int[][] ans) {
+        if (ans[x][y] != -2) {
+            return ans[x][y];
+        }
+        String formula = get(x, y).toString();
+        List<SCell> dependencies = getDependencies(formula);
+
+        int maxDepth = 0;
+        for (SCell dep : dependencies) {
+
+            CellEntry cellEntry = new CellEntry(dep.toString());
+            if (cellEntry.isValid()) {
+                int depX = cellEntry.getX();
+                int depY = cellEntry.getY();
+                maxDepth = Math.max(maxDepth, calculateDepth(depX, depY, ans));
+            }
+        }
+
+        maxDepth = Math.max(maxDepth, get(x, y).getOrder());
+
+        ans[x][y] = maxDepth;
+        return maxDepth;
+    }
+
 
 
     @Override
