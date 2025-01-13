@@ -111,14 +111,50 @@ class SCellTest {
 
     @org.junit.jupiter.api.Test
     void testToString() {
+        SCell c1 = new SCell("5");
+        assertEquals("5", c1.toString());
+
+        SCell c2 = new SCell("Hello");
+        assertEquals("Hello", c2.toString());
+
+        SCell cell2 = new SCell("=A1++B2");
+        assertEquals(Ex2Utils.ERR_FORM, cell2.toString());
+
+
     }
 
     @org.junit.jupiter.api.Test
     void setData() {
+        SCell c1 = new SCell("");
+        c1.setData("6");
+
+        assertEquals(Ex2Utils.NUMBER, c1.getType());
+
+        SCell c2 = new SCell("");
+        c2.setData("=A1+B2");
+
+        assertEquals(Ex2Utils.FORM, c2.getType());
+
+        SCell c3 = new SCell("");
+        c3.setData("Hi");
+
+        assertEquals(Ex2Utils.TEXT, c3.getType());
+
+        SCell c4 = new SCell("");
+        c4.setData("=A1++B2");
+
+        assertEquals(Ex2Utils.ERR_FORM_FORMAT, c4.getType());
+
     }
 
     @org.junit.jupiter.api.Test
     void getData() {
+        SCell c1 = new SCell("=A1+B2");
+        assertEquals("=A1+B2", c1.getData());
+
+        SCell c2 = new SCell("=8+7");
+        assertEquals("=8+7", c2.getData());
+
     }
 
     @org.junit.jupiter.api.Test

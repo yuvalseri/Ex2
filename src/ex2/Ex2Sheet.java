@@ -97,9 +97,7 @@ public  class Ex2Sheet implements Sheet {
     public void set(int x, int y, String s) {
         Cell c = new SCell(s);
         table[x][y] = c;
-        // Add your code here
 
-        /////////////////////
     }
     @Override
     public void eval() {
@@ -107,20 +105,17 @@ public  class Ex2Sheet implements Sheet {
         // Add your code here
         for (int i = 0; i < dd.length; i++) {
             for (int j = 0; j < dd[i].length; j++) {
-                // נוודא שהשורה או העמודה לא ריקה לפני שנחשב
-                if (dd[i][j] != -1) {  // נניח -1 אומר שאין צורך לחשב
-                    String cellValue = get(i, j).toString();
 
-                    // אם התא הוא פורמולה, נחשב אותו
+                if (dd[i][j] != -1) {
+                    String cellValue = get(i, j).toString();
                     if (SCell.isForm(cellValue)) {
                         String result = eval(i,j);
-                        set(i, j, result);  // נשמור את התוצאה בחזרה בתא
+                        set(i, j, result);
                     }
                 }
             }
         }
 
-        // ///////////////////
     }
 
     @Override

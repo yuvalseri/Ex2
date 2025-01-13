@@ -227,6 +227,7 @@ public class SCell implements Cell {
     @Override
     public String toString() {
         return getData();
+
     }
 
     @Override
@@ -242,7 +243,7 @@ public void setData(String s) {
         if(isForm(s)){
             this.type= Ex2Utils.FORM;
         }
-        else if(!(isNumber(s)) && !(isNumber(s)) && !(isForm(s))){
+        else if(!(isNumber(s)) && !(isText(s)) && !(isForm(s))){
             this.type= Ex2Utils.ERR_FORM_FORMAT;
         }
 
