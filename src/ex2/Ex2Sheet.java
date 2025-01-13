@@ -28,12 +28,20 @@ public  class Ex2Sheet implements Sheet {
     @Override
     public String value(int x, int y) {
         String ans = Ex2Utils.EMPTY_CELL;
-        // Add your code here
+        Cell c = get(x, y);
 
-        Cell c = get(x,y);
-        if(c!=null) {ans = c.toString();}
-
-        /////////////////////
+        if (c != null) {
+            String cellValue = c.toString();
+            if(SCell.isNumber(cellValue)){
+                 double num= Double.parseDouble(cellValue);
+                 ans= String.valueOf(num);
+            }
+            if (SCell.isForm(cellValue)) {
+                ans = eval(x,y);
+            } else {
+                ans = cellValue;
+            }
+        }
         return ans;
     }
 

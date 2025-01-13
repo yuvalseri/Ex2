@@ -61,13 +61,14 @@ class Ex2SheetTest {
             Ex2Sheet sheet = new Ex2Sheet(10, 10);
 
             sheet.set(0, 0, "=5+3*2");
-           sheet.set(0, 1, "Hello");
+            sheet.set(0, 1, "Hello");
             sheet.set(0, 2, "=1+2");
             sheet.set(0, 3, "=(1+2)*3/(2/5)");
             sheet.set(0, 4, "=(10-5*2)");
             sheet.set(0, 5, "9");
             sheet.set(0, 6, "#$^D");
             sheet.set(0, 7, "=A1+A3");
+            sheet.set(0, 8, "=A3+A6");
 
             assertEquals("11.0", sheet.eval(0, 0));
             assertEquals("Hello", sheet.eval(0, 1));
@@ -77,6 +78,7 @@ class Ex2SheetTest {
             assertEquals("9", sheet.eval(0, 5));
             assertEquals("#$^D", sheet.eval(0, 6));
             assertEquals("14.0", sheet.eval(0, 7));
+            assertEquals("12.0", sheet.eval(0, 8));
     }
     @Test
     void indOfMainOp(){

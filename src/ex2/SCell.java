@@ -14,6 +14,7 @@ public class SCell implements Cell {
     public ArrayList<SCell> dependC;
     public SCell(String s) {
         // Add your code here
+        this.order= order;
         this.line=s;
         setData(s);
         this.type=getType();
