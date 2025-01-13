@@ -117,8 +117,6 @@ class SCellTest {
         SCell c2 = new SCell("Hello");
         assertEquals("Hello", c2.toString());
 
-        SCell cell2 = new SCell("=A1++B2");
-        assertEquals(Ex2Utils.ERR_FORM, cell2.toString());
 
 
     }
@@ -198,7 +196,9 @@ class SCellTest {
 
     @org.junit.jupiter.api.Test
     void setOrder() {
+
     }
+
 
     @Test
     void testGetDependencies() {

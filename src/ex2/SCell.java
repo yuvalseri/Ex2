@@ -15,7 +15,7 @@ public class SCell implements Cell {
     public ArrayList<SCell> dependC;
     public SCell(String s) {
         // Add your code here
-        this.order= order;
+        this.order=0;
         this.line=s;
         setData(s);
         this.type=getType();
@@ -67,72 +67,6 @@ public class SCell implements Cell {
             String validChars = "0123456789.+-/*()ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             String operators = "+-*/";
 
-        /*boolean lastCharWasOperator = false; // the former char is an operator
-        boolean lastCharWasLetter = false;   // the former char is a letter
-        boolean expectingNumberAfterLetter = false; // we expect to a number after a letter
-        StringBuilder numberBuffer = new StringBuilder();
-        int openParentheses = 0;
-
-        for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
-            char ch = formula.charAt(i);
-
-            if (validChars.indexOf(ch) == -1) { // there is an invalid char
-                return false;
-            }
-
-            if (ch == '(') {
-                openParentheses++;
-            } else if (ch == ')') {
-                openParentheses--;
-            }
-                if (openParentheses < 0) { //the number of ')' is greater than the number of '('
-                    return false; //
-                }
-
-                if (Character.isLetter(ch)) {
-                if (lastCharWasLetter) { // if there are two adjoint letters
-                    return false; //
-                }
-                lastCharWasLetter = true;
-                expectingNumberAfterLetter = true;
-                numberBuffer.setLength(0); // reset
-                continue;
-            }
-
-                if (Character.isDigit(ch)) {
-                   if (expectingNumberAfterLetter) {
-                       numberBuffer.append(ch);
-                       if (numberBuffer.length() > 2) {
-                           return false; // the number after the letter is grater than 99
-                       }
-                    lastCharWasLetter = false;
-                    expectingNumberAfterLetter = false; // reset
-                       continue;
-                }
-                   lastCharWasOperator= false;
-            }
-
-                if (operators.indexOf(ch) != -1) {
-                if (lastCharWasOperator) {
-                    return false; // two adjoint operators
-                }
-                lastCharWasOperator = true;
-                lastCharWasLetter = false;
-                expectingNumberAfterLetter = false;
-            } else {
-                lastCharWasOperator = false;
-            }
-        }
-        if (openParentheses != 0) {
-            return false; // if there are parentheses that aren't close
-        }
-
-        if (lastCharWasLetter || lastCharWasOperator) {// if the last char of the formula is invalid last char
-            return false;
-        }
-
-        return true;*/
-
             int openParentheses = 0;
 
             for (int i = 0; i < formula.length(); i++) { // loop passes all the chars in the string
@@ -150,19 +84,19 @@ public class SCell implements Cell {
                 if (openParentheses < 0) { //the number of ')' is greater than the number of '('
                     return false; //
                 }
-                if (Character.isLetter(ch)) {
-                    if (i + 1 < formula.length() && Character.isLetter(formula.charAt(i + 1))) {
-                        return false;
-                    } else if (i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))) {
-                        int count = 1;
-                        for (int j = i + 2; j < formula.length(); j++) {
-                            if (Character.isDigit(formula.charAt(j))) {
-                                count++;
+                if (Character.isLetter(ch)) { //if the char is a letter
+                    if (i + 1 < formula.length() && Character.isLetter(formula.charAt(i + 1))) {//if the next char is also letter
+                        return false;//the formula is invalid
+                    } else if (i + 1 < formula.length() && Character.isDigit(formula.charAt(i + 1))) {//if after the letter there is a digit
+                        int count = 1;// counter of the digits
+                        for (int j = i + 2; j < formula.length(); j++) { // a loop passes all the string from the char that after the first digit
+                            if (Character.isDigit(formula.charAt(j))) {// if the char is digit
+                                count++; // update the count by 1
                             } else {
-                                break; // עצור אם הגעת לתו שאינו ספרה
+                                break;
                             }
-                            if (count > 2) {
-                                return false;
+                            if (count > 2) { //if after the letter there is a number that bigger than 99
+                                return false; // the formula is invalid
                             }
                         }
 
@@ -170,17 +104,17 @@ public class SCell implements Cell {
                     continue;
                 }
 
-                if (operators.indexOf(ch) >= 0) {
-                    if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) {
-                        return false;
+                if (operators.indexOf(ch) >= 0) {// if the char is operator
+                    if (i + 1 < formula.length() && operators.indexOf(formula.charAt(i + 1)) >= 0) { // the next char is operator
+                        return false;// the formula is invalid
                     }
                 }
             }
             if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) { // if the last char of the formula is invalid last char
-                return false;
+                return false;// the formula is invalid
             }
-            if (openParentheses != 0) {
-                return false; // if there are parentheses that aren't close
+            if (openParentheses != 0) {//if there are parentheses that aren't close
+                return false; // the formula is invalid
             }
         }
     return true;
@@ -193,9 +127,7 @@ public class SCell implements Cell {
         }
         else if(!isNumber(content) && content.indexOf("=") !=0){
             ans= true;
-            //else if(!isNumber(content) && !isForm(content)){
-             //ans= true;
-    }
+        }
     return ans;
     }
 
@@ -204,24 +136,23 @@ public class SCell implements Cell {
     public int getOrder() {
 
         // Add your code here
-        if(type== Ex2Utils.NUMBER || type== Ex2Utils.TEXT){
-        return 0;}
-        if (isBeingCalculated) {
+        if(type== Ex2Utils.NUMBER || type== Ex2Utils.TEXT){ // if the type of the cell is text or number
+        return 0;} // the depth is 0
+        if (isBeingCalculated) { //if the cell in calculating process
             throw new IllegalStateException("Circular dependency detected!");
         }
         else if(type== Ex2Utils.FORM){
-            isBeingCalculated = true;
+            isBeingCalculated = true; //
             int max=0;
 
             for(SCell cell : dependC){
-               max= Math.max(max, cell.getOrder());
+               max= Math.max(max, cell.getOrder()); // update max to the max value dependence
             }
-            isBeingCalculated = false;
-            int order= 1+ max;
+            isBeingCalculated = false; // the calculating process is over
+            int order= 1+ max; // udapting the order by 1
             return order;
-    }
+        }
     return -1;
-
     }
 
     @Override
@@ -247,7 +178,7 @@ public void setData(String s) {
             this.type= Ex2Utils.ERR_FORM_FORMAT;
         }
 
-        //}
+
         /////////////////////
     }
     @Override
@@ -271,21 +202,21 @@ public void setData(String s) {
        this.order= t;
     }
     public static List<SCell> getDependencies(String formula) {
-        List<SCell> dependencies = new ArrayList<>();
+        List<SCell> dependencies = new ArrayList<>(); //creating a list which will contain the dependencies of the cell
 
-        if (formula.indexOf("=") == 0) {
-            String[] tokens = formula.substring(1).split("[*+\\-/()]");
-            for (String token : tokens) {
-                if (isValidCellReference(token)) {
-                    dependencies.add(new SCell(token));
+        if (formula.indexOf("=") == 0) { // if the first char is '='
+            String[] tokens = formula.substring(1).split("[*+\\-/()]"); //spliting the formula by the operators
+            for (String token : tokens) { //a loop passes all the parts of the split formula
+                if (isValidCellReference(token)) { //if is valid cell reference
+                    dependencies.add(new SCell(token)); // adding the token to the list
                 }
             }
         }
 
-        return dependencies;
+        return dependencies; //return the list of dependencies
     }
 
     public static boolean isValidCellReference(String token) {
-        return token.matches("[A-Za-z]\\d+");
+        return token.matches("[A-Za-z]\\d+"); // valid reference is a letter and then number
     }
 }
