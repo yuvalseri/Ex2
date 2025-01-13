@@ -13,6 +13,14 @@ class Ex2SheetTest {
 
     @Test
     void get() {
+        Ex2Sheet sheet = new Ex2Sheet();
+        sheet.set(0, 0, "5");
+        sheet.set(1, 1, "Hello");
+        sheet.set(2, 2, "=A1+4");
+
+        assertEquals("5", sheet.get(0,0).toString());
+        assertEquals("Hello",sheet.get(1,1).toString());
+        assertEquals("=A1+4", sheet.get(2,2).toString());
     }
 
     @Test
