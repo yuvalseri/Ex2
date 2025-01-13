@@ -159,6 +159,26 @@ class SCellTest {
 
     @org.junit.jupiter.api.Test
     void getType() {
+        SCell c1 = new SCell("++A1+B2");
+        c1.setType(Ex2Utils.ERR_FORM_FORMAT);
+
+        assertEquals(Ex2Utils.ERR_FORM_FORMAT, c1.getType());
+
+        SCell c2 = new SCell("3");
+        c1.setType(Ex2Utils.NUMBER);
+
+        assertEquals(Ex2Utils.NUMBER, c2.getType());
+
+        SCell c3 = new SCell("!@#$");
+        c1.setType(Ex2Utils.TEXT);
+
+        assertEquals(Ex2Utils.TEXT, c3.getType());
+
+        SCell c4 = new SCell("=A4/A1");
+        c1.setType(Ex2Utils.FORM);
+
+        assertEquals(Ex2Utils.FORM, c4.getType());
+
     }
 
     @org.junit.jupiter.api.Test
