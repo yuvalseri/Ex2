@@ -175,7 +175,7 @@ public class SCell implements Cell {
                     }
                 }
             }
-            if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) {
+            if (Character.isLetter(formula.charAt(formula.length() - 1)) || operators.indexOf(formula.charAt(formula.length() - 1)) >= 0) { // if the last char of the formula is invalid last char
                 return false;
             }
             if (openParentheses != 0) {
@@ -190,8 +190,10 @@ public class SCell implements Cell {
         if (content == null || content.toString().isEmpty() || content== " ") {
             return ans;
         }
-        else if(!isNumber(content) && !isForm(content)){
-             ans= true;
+        else if(!isNumber(content) && content.indexOf("=") !=0){
+            ans= true;
+            //else if(!isNumber(content) && !isForm(content)){
+             //ans= true;
     }
     return ans;
     }
