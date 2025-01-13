@@ -1,5 +1,5 @@
 package ex2;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,14 +199,46 @@ public  class Ex2Sheet implements Sheet {
     @Override
     public void load(String fileName) throws IOException {
         // Add your code here
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            boolean isTitle = true; // this line is the title
 
-        /////////////////////
+            while ((line = reader.readLine()) != null) { // while there are lines to read
+                if (isTitle) { // if this is the title
+                    isTitle = false; // from now the line is not title
+                    continue; // ignore the title
+                }
+
+                String[] parts = line.split("," ); // split the line by ','
+                if (parts.length >= 3) { //if there are more than 3 parts
+                    try {
+                        int x = Integer.parseInt(parts[0]); //invert the first and the second part to integers
+                        int y = Integer.parseInt(parts[1]);
+                        String DataCell = parts[2]; //the third part represented the value of the cell
+                        set(x, y, DataCell);
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                }
+            }
+        }
+
     }
 
     @Override
     public void save(String fileName) throws IOException {
         // Add your code here
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write("I2CS ArielU: SpreadSheet (Ex2) assignment\n"); //the title
+            for (int i = 0; i < width(); i++) {
+                for (int j = 0; j < height(); j++) {
+                    Cell cell = get(i, j); // getting the cell
+                    if (cell != null && !cell.getData().equals(Ex2Utils.EMPTY_CELL)) { // if the cell isn't null
+                        writer.write(i + "," + j + "," + cell.getData() + "\n"); // write the data of the cell in the file
+                    }
+                }
+            }
+        }
         /////////////////////
     }
 
