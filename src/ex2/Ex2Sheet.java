@@ -57,8 +57,12 @@ public  class Ex2Sheet implements Sheet {
 
     @Override
     public Cell get(int x, int y) {
-
+    if(isIn(x,y)){
         return table[x][y];
+    }
+    else{
+        throw new IllegalArgumentException(String.valueOf(Ex2Utils.ERR));
+    }
     }
 
     @Override
