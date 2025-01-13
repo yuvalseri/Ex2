@@ -183,6 +183,17 @@ class SCellTest {
 
     @org.junit.jupiter.api.Test
     void setType() {
+        SCell cell = new SCell("Hello");
+        assertEquals(Ex2Utils.TEXT, cell.getType());
+        cell.setType(Ex2Utils.NUMBER);
+        assertEquals(Ex2Utils.NUMBER, cell.getType());
+
+        cell.setType(Ex2Utils.FORM);
+        assertEquals(Ex2Utils.FORM, cell.getType());
+
+        cell.setType(Ex2Utils.ERR_FORM_FORMAT);
+        assertEquals(Ex2Utils.ERR_FORM_FORMAT, cell.getType());
+
     }
 
     @org.junit.jupiter.api.Test
